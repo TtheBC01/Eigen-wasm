@@ -1,6 +1,7 @@
 # Eigen-wasm
 
-Eigen bindings for WASM runtime
+A simple WASM interface for the Eigen Tux matrix library. Perform fast matrix-matrix multiplies, norm calculations, and system solves (Ax=b) in 
+a mobile or desktop browser. 
 
 ## Setup
 

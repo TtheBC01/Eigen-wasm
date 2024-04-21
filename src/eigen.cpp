@@ -1,5 +1,6 @@
 #include <math.h>
 #include <Eigen/Core>
+#include <Eigen/Dense>
 #include <cassert>
 #include <iostream>
 
@@ -19,5 +20,15 @@ extern "C"
         Eigen::Map<Eigen::MatrixXf> C(_C, rowsA, colsB);
 
         C = A*B;
+    }
+
+    void float_system_solve(int rowsA, int colsA, float* _A, float* _b, float* _x)
+    {
+        Eigen::Map<Eigen::MatrixXf> A(_A, rowsA, colsA);
+        Eigen::Map<Eigen::MatrixXf> x(_x, colsA, 1);
+        Eigen::Map<Eigen::MatrixXf> b(_b, rowsA, 1);
+        Eigen::JacobiSVD<Eigen::MatrixXf> svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);
+
+
     }
 }
