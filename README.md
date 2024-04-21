@@ -16,6 +16,8 @@ emcc -v
 
 ## Compiling
 
+The source code is compiled using [emscripten](https://emscripten.org/);
+
 ```shell
 emcc src/eigen.cpp -o build/eigen.html -I ./Eigen -sEXPORTED_FUNCTIONS=_float_norm,_float_random_matrix,_float_matrix_matrix_mult,_float_system_solve,_free -sEXPORTED_RUNTIME_METHODS=cwrap
 ```
