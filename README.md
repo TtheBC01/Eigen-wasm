@@ -1,4 +1,5 @@
 # Eigen-wasm
+
 Eigen bindings for WASM runtime
 
 ## Setup
@@ -20,14 +21,21 @@ emcc src/eigen.cpp -o build/eigen.html -I ./Eigen -sEXPORTED_FUNCTIONS=_float_no
 
 ## Test in Browser
 
+Serve the test app from the build folder. After starting the http server, in your browser go to http://localhost:8000.
+
 ```shell
 cd build
 python3 -m http.server
 ```
-### Matrix L2 Norm
+
+Once the page loads, open the developer console and try the following examples (you should just be able to copy paste the javascript from below). 
 
 In all examples, we use column-major storage. Numerical data is passed as an array which is mapped to 
 a matrix of the size specified by the number of rows and columns passed to the function. 
+
+### Matrix L2 Norm
+
+Calculate the L2 norm of a matrix with [`float_norm`](/src/eigen.cpp#L8).
 
 ```javascript
 const float_norm = Module.cwrap('float_norm', 'number', ['number', 'number', 'array']);
@@ -39,6 +47,8 @@ float_norm(rows, cols, data);
 ```
 
 ### Matrix-Matrix Multiply
+
+Perform fast matrix-matrix multiplies with [`float_matrix_matrix_mult`](/src/eigen.cpp#L14).
 
 ```javascript
 const float_matrix_matrix_mult = Module.cwrap('float_matrix_matrix_mult', 'null', ['number', 'number', 'array', 'number', 'number', 'array'])
@@ -59,4 +69,5 @@ float_matrix_matrix_mult(rowsA, colsA, A, rowsB, colsB, B, CHeap.byteOffset);
 var result = new Float32Array(CHeap.buffer, CHeap.byteOffset, rowsA * colsB );
 
 Module._free(CHeap.byteOffset);
+// result should be [1, 2, 4, 6]
 ```
