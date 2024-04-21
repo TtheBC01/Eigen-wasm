@@ -1992,6 +1992,9 @@ var _float_matrix_matrix_mult = Module["_float_matrix_matrix_mult"] = createExpo
 var _float_system_solve = Module["_float_system_solve"] = createExportWrapper("float_system_solve");
 
 /** @type {function(...*):?} */
+var _float_matrix_matrix_add = Module["_float_matrix_matrix_add"] = createExportWrapper("float_matrix_matrix_add");
+
+/** @type {function(...*):?} */
 var _free = Module["_free"] = createExportWrapper("free");
 
 /** @type {function(...*):?} */
