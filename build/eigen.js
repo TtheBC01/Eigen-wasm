@@ -1923,6 +1923,10 @@ var ASM_CONSTS = {
       throw ptr + " - Exception catching is disabled, this exception cannot be caught. Compile with -s NO_DISABLE_EXCEPTION_CATCHING or -s EXCEPTION_CATCHING_ALLOWED=[..] to catch.";
     }
 
+  function _emscripten_memcpy_big(dest, src, num) {
+      HEAPU8.copyWithin(dest, src, src + num);
+    }
+
   function _emscripten_get_heap_max() {
       return HEAPU8.length;
     }
@@ -1968,6 +1972,7 @@ var asmLibraryArg = {
   "__assert_fail": ___assert_fail,
   "__cxa_allocate_exception": ___cxa_allocate_exception,
   "__cxa_throw": ___cxa_throw,
+  "emscripten_memcpy_big": _emscripten_memcpy_big,
   "emscripten_resize_heap": _emscripten_resize_heap
 };
 var asm = createWasm();
@@ -1979,6 +1984,9 @@ var _float_norm = Module["_float_norm"] = createExportWrapper("float_norm");
 
 /** @type {function(...*):?} */
 var _float_matrix_matrix_mult = Module["_float_matrix_matrix_mult"] = createExportWrapper("float_matrix_matrix_mult");
+
+/** @type {function(...*):?} */
+var _float_system_solve = Module["_float_system_solve"] = createExportWrapper("float_system_solve");
 
 /** @type {function(...*):?} */
 var _free = Module["_free"] = createExportWrapper("free");

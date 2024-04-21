@@ -27,8 +27,6 @@ extern "C"
         Eigen::Map<Eigen::MatrixXf> A(_A, rowsA, colsA);
         Eigen::Map<Eigen::MatrixXf> x(_x, colsA, 1);
         Eigen::Map<Eigen::MatrixXf> b(_b, rowsA, 1);
-        Eigen::JacobiSVD<Eigen::MatrixXf> svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);
-
-
+        x = A.template jacobiSvd<Eigen::ComputeThinU | Eigen::ComputeThinV>().solve(b);
     }
 }

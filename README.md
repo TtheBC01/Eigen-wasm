@@ -1,6 +1,6 @@
 # Eigen-wasm
 
-A simple WASM interface for the Eigen Tux matrix library. Perform fast matrix-matrix multiplies, norm calculations, and system solves (Ax=b) in 
+A simple [WASM](https://webassembly.org/) interface for the [Eigen Tux](https://eigen.tuxfamily.org/) matrix library. Perform fast matrix-matrix multiplies, norm calculations, and system solves (Ax=b) in 
 a mobile or desktop browser. 
 
 ## Setup
@@ -17,7 +17,7 @@ emcc -v
 ## Compiling
 
 ```shell
-emcc src/eigen.cpp -o build/eigen.html -I ./Eigen -sEXPORTED_FUNCTIONS=_float_norm,_float_matrix_matrix_mult -sEXPORTED_RUNTIME_METHODS=cwrap
+emcc src/eigen.cpp -o build/eigen.html -I ./Eigen -sEXPORTED_FUNCTIONS=_float_norm,_float_matrix_matrix_mult,_float_system_solve,_free -sEXPORTED_RUNTIME_METHODS=cwrap
 ```
 
 ## Test in Browser
@@ -71,4 +71,28 @@ var result = new Float32Array(CHeap.buffer, CHeap.byteOffset, rowsA * colsB );
 
 Module._free(CHeap.byteOffset);
 // result should be [1, 2, 4, 6]
+```
+
+### Solve a System of Equations with Singular Value Decomposition: Ax=(USV^T)x=b
+
+You can solve a square system or get a least squares solution for a rectagular system using [`float_system_solve`](/src/eigen.cpp#L25).
+
+```javascript
+const float_matrix_matrix_mult = Module.cwrap('float_system_solve', 'null', ['number', 'number', 'array', 'array'])
+const rowsA = 4;
+const colsA = 3;
+const A = new Uint8Array(new Float32Array([1, 2, 3, 4, 5, 6, 7, 9, 9, 10, 11, 12]).buffer);
+const b = new Uint8Array(new Float32Array([1, 0, 0, 1]).buffer);
+
+// create pointer and set data on the heap
+var nXBytes = rowsA * A.BYTES_PER_ELEMENT; // total bytes is number of matrix elements times bytes per element
+var XPtr = Module._malloc(nXBytes); // allocate a pointer
+var XHeap = new Uint8Array(Module.HEAPU8.buffer, XPtr, nXBytes); // put it on the heap
+
+float_matrix_matrix_mult(rowsA, colsA, A, b, XHeap.byteOffset);
+
+var x = new Float32Array(XHeap.buffer, XHeap.byteOffset, colsA);
+
+Module._free(XHeap.byteOffset);
+// x should be [-1.5000003576278687, 1.666666030883789, -0.6666661500930786]
 ```
