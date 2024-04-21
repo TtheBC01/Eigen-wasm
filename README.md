@@ -1,4 +1,4 @@
-# Eigen-wasm
+# Using Eigen in the Browser
 
 A simple [WASM](https://webassembly.org/) interface for the [Eigen Tux](https://eigen.tuxfamily.org/) matrix library. Perform fast matrix-matrix multiplies, norm calculations, and system solves (Ax=b) in 
 a mobile or desktop browser. 
