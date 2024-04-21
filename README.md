@@ -72,7 +72,7 @@ Module._free(AHeap.byteOffset);
 // A should be random values
 ```
 
-### Matrix-Matrix Multiply: C = A*B
+### Matrix-Matrix Multiply: C = A\*B
 
 Perform fast matrix-matrix multiplies with [`float_matrix_matrix_mult`](/src/eigen.cpp#L21).
 
@@ -122,7 +122,7 @@ Module._free(XHeap.byteOffset);
 // x should be [-1.5000003576278687, 1.666666030883789, -0.6666661500930786]
 ```
 
-### Add Two Matrices with Scalar Multiplication: C = alpha*A + beta*B
+### Add Two Matrices with Scalar Multiplication: C = alpha\*A + beta\*B
 
 Add two congruent matrices and optionally include scalar multiplication in the same call with
 [`float_matrix_matrix_add`](/src/eigen.cpp#L39);
