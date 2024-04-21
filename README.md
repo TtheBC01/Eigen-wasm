@@ -31,7 +31,7 @@ python3 -m http.server
 
 Once the page loads, open the developer console and try the following examples (you should just be able to copy paste the javascript from below). 
 
-In all examples, we use column-major storage. Numerical data is passed as an array which is mapped to 
+In all examples, we use [column-major](https://en.wikipedia.org/wiki/Row-_and_column-major_order) storage. Numerical data is passed as an array which is mapped to 
 a matrix of the size specified by the number of rows and columns passed to the function. 
 
 ### Matrix L2 Norm
