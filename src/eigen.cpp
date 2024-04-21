@@ -6,10 +6,10 @@
 
 extern "C"
 {
-    float float_norm(int rows, int cols, float* data)
+    float float_norm(int rows, int cols, float* _A)
     {
-        Eigen::Map<Eigen::MatrixXf> x(data, rows, cols);
-        return x.norm();
+        Eigen::Map<Eigen::MatrixXf> A(_A, rows, cols);
+        return A.norm();
     }
 
     void float_random_matrix(int rows, int cols, float* _A)
