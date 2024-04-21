@@ -17,7 +17,7 @@ emcc -v
 ## Compiling
 
 ```shell
-emcc src/eigen.cpp -o build/eigen.html -I ./Eigen -sEXPORTED_FUNCTIONS=_float_norm,_float_matrix_matrix_mult,_float_system_solve,_free -sEXPORTED_RUNTIME_METHODS=cwrap
+emcc src/eigen.cpp -o build/eigen.html -I ./Eigen -sEXPORTED_FUNCTIONS=_float_norm,_float_random_matrix,_float_matrix_matrix_mult,_float_system_solve,_free -sEXPORTED_RUNTIME_METHODS=cwrap
 ```
 
 ## Test in Browser
@@ -47,9 +47,31 @@ float_norm(rows, cols, data);
 // should print 9.539392471313477
 ```
 
+### Get a Random Matrix
+
+Initalize a matrix to be randome values with [`float_random_matrix`](/src/eigen.cpp#L15).
+
+```javascript
+const float_random_matrix = Module.cwrap('float_random_matrix', 'null', ['number', 'number'])
+const rowsA = 4;
+const colsA = 3;
+
+// create pointer and set data on the heap
+var nABytes = rowsA * colsA * Float32Array.BYTES_PER_ELEMENT; // total bytes is number of matrix elements times bytes per element
+var APtr = Module._malloc(nABytes); // allocate a pointer
+var AHeap = new Uint8Array(Module.HEAPU8.buffer, APtr, nABytes); // put it on the heap
+
+float_random_matrix(rowsA, colsA, AHeap.byteOffset);
+
+var A = new Float32Array(AHeap.buffer, AHeap.byteOffset, rowsA * colsA);
+
+Module._free(AHeap.byteOffset);
+// A should be random values
+```
+
 ### Matrix-Matrix Multiply
 
-Perform fast matrix-matrix multiplies with [`float_matrix_matrix_mult`](/src/eigen.cpp#L14).
+Perform fast matrix-matrix multiplies with [`float_matrix_matrix_mult`](/src/eigen.cpp#L21).
 
 ```javascript
 const float_matrix_matrix_mult = Module.cwrap('float_matrix_matrix_mult', 'null', ['number', 'number', 'array', 'number', 'number', 'array'])
@@ -75,10 +97,10 @@ Module._free(CHeap.byteOffset);
 
 ### Solve a System of Equations with Singular Value Decomposition: Ax=(USV^T)x=b
 
-You can solve a square system or get a least squares solution for a rectagular system using [`float_system_solve`](/src/eigen.cpp#L25).
+You can solve a square system or get a least squares solution for a rectagular system using [`float_system_solve`](/src/eigen.cpp#L31).
 
 ```javascript
-const float_matrix_matrix_mult = Module.cwrap('float_system_solve', 'null', ['number', 'number', 'array', 'array'])
+const float_system_solve = Module.cwrap('float_system_solve', 'null', ['number', 'number', 'array', 'array'])
 const rowsA = 4;
 const colsA = 3;
 const A = new Uint8Array(new Float32Array([1, 2, 3, 4, 5, 6, 7, 9, 9, 10, 11, 12]).buffer);
@@ -89,7 +111,7 @@ var nXBytes = rowsA * A.BYTES_PER_ELEMENT; // total bytes is number of matrix el
 var XPtr = Module._malloc(nXBytes); // allocate a pointer
 var XHeap = new Uint8Array(Module.HEAPU8.buffer, XPtr, nXBytes); // put it on the heap
 
-float_matrix_matrix_mult(rowsA, colsA, A, b, XHeap.byteOffset);
+float_system_solve(rowsA, colsA, A, b, XHeap.byteOffset);
 
 var x = new Float32Array(XHeap.buffer, XHeap.byteOffset, colsA);
 

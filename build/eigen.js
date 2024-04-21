@@ -1983,6 +1983,9 @@ var ___wasm_call_ctors = Module["___wasm_call_ctors"] = createExportWrapper("__w
 var _float_norm = Module["_float_norm"] = createExportWrapper("float_norm");
 
 /** @type {function(...*):?} */
+var _float_random_matrix = Module["_float_random_matrix"] = createExportWrapper("float_random_matrix");
+
+/** @type {function(...*):?} */
 var _float_matrix_matrix_mult = Module["_float_matrix_matrix_mult"] = createExportWrapper("float_matrix_matrix_mult");
 
 /** @type {function(...*):?} */
