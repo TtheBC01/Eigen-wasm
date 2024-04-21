@@ -1,18 +1,23 @@
 #include <math.h>
 #include <Eigen/Core>
-#include <cstdio>
+#include <cassert>
+#include <iostream>
 
 extern "C"
 {
     float float_norm(int rows, int cols, float* data)
     {
         Eigen::Map<Eigen::MatrixXf> x(data, rows, cols);
-        float myNorm = x.sum();
-        printf("Number of rows: %ld\n", x.rows());
-        printf("Number of cols: %ld\n", x.cols());
-        printf("The value of myNorm is: %f\n", myNorm);
-        printf("my matrix element: %f\n", x(0,0));
-        printf("my data element: %f\n", data[0]);
-        return myNorm;
+        return x.norm();
+    }
+
+    void float_matrix_matrix_mult(int rowsA, int colsA, float* _A, int rowsB, int colsB, float* _B, float* _C)
+    {
+        assert(colsA == rowsB);
+        Eigen::Map<Eigen::MatrixXf> A(_A, rowsA, colsA);
+        Eigen::Map<Eigen::MatrixXf> B(_B, rowsB, colsB);
+        Eigen::Map<Eigen::MatrixXf> C(_C, rowsA, colsB);
+
+        C = A*B;
     }
 }
