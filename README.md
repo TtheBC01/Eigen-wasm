@@ -29,7 +29,7 @@ python3 -m http.server
 In all examples, we use column-major storage. Numerical data is passed as an array which is mapped to 
 a matrix of the size specified by the number of rows and columns passed to the function. 
 
-```console
+```javascript
 const float_norm = Module.cwrap('float_norm', 'number', ['number', 'number', 'array']);
 rows = 2
 cols = 3
@@ -40,7 +40,7 @@ float_norm(rows, cols, data);
 
 ### Matrix-Matrix Multiply
 
-```console
+```javascript
 const float_matrix_matrix_mult = Module.cwrap('float_matrix_matrix_mult', 'null', ['number', 'number', 'array', 'number', 'number', 'array'])
 const rowsA = 2;
 const colsA = 3;
