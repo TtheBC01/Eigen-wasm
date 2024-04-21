@@ -48,18 +48,15 @@ const rowsB = 3;
 const colsB = 2;
 const A = new Uint8Array(new Float32Array([1, 2, 3, 4, 5, 6]).buffer);
 const B = new Uint8Array(new Float32Array([1, 0, 0, 1, 1, 0]).buffer);
-var C = new Uint8Array(new Float32Array([0, 0, 0, 0]).buffer);
 
 // create pointer and set data on the heap
-var C = new Float32Array(4);
-var nCBytes = C.length * C.BYTES_PER_ELEMENT;
-var CPtr = Module._malloc(nCBytes);
-var CHeap = new Uint8Array(Module.HEAPU8.buffer, CPtr, nCBytes);
-CHeap.set(new Uint8Array(C.buffer));
+var nCBytes = rowsA * colsB * A.BYTES_PER_ELEMENT; // total bytes is number of matrix elements times bytes per element
+var CPtr = Module._malloc(nCBytes); // allocate a pointer
+var CHeap = new Uint8Array(Module.HEAPU8.buffer, CPtr, nCBytes); // put it on the heap
 
 float_matrix_matrix_mult(rowsA, colsA, A, rowsB, colsB, B, CHeap.byteOffset);
 
-var result = new Float32Array(CHeap.buffer, CHeap.byteOffset, C.length);
+var result = new Float32Array(CHeap.buffer, CHeap.byteOffset, rowsA * colsB );
 
 Module._free(CHeap.byteOffset);
 ```
